@@ -9,7 +9,7 @@ if d12>=0
     end
     for i = d12+1:(st-1)
         currentPlane = imread(G2,i-d12);
-        currentPlane = circshift(currentPlane,[-dx,-dy]);
+        currentPlane = mycircshift(currentPlane,[-dx,-dy]);
         imwrite(currentPlane,outName,'WriteMode','append');
     end
     disp(['G2end',num2str(i)]);
@@ -17,9 +17,13 @@ if d12>=0
         w1 = m(i-st+1);
         w2 = 1-w1;
         currentPlane = imread(G2,i-d12);
-        currentPlane = circshift(currentPlane,[-dx,-dy]);
-        currentPlane1 = imread(G1,i-stg(1)+1);
-%         currentPlane = w1*currentPlane+w2*currentPlane1;
+        currentPlane = mycircshift(currentPlane,[-dx,-dy]);
+        if i+1-stg(1)>0
+            currentPlane1 = imread(G1,i+1-stg(1));
+        else
+            currentPlane1=currentPlane;
+        end
+        %         currentPlane = w1*currentPlane+w2*currentPlane1;
         currentPlane = max(currentPlane,currentPlane1);
         imwrite(currentPlane,outName,'WriteMode','append');
     end
@@ -29,19 +33,26 @@ if d12>=0
     end
 else
     disp ('case2')
+    p = 0;f = 0;
     for i = 1:st-1-d12
         currentPlane = imread(G2,i);
-        currentPlane = circshift(currentPlane,[-dx,-dy]);
+        if f==0&&meanPart(currentPlane)==0
+            p = p+1;
+            continue
+        end
+        f = 1;
+        currentPlane = mycircshift(currentPlane,[-dx,-dy]);
         imwrite(currentPlane,outName,'WriteMode','append');
     end
     disp(['G2end',num2str(i)]);
     for i = st:ed
-        w1 = m(i-st+1);
-        w2 = 1-w1;
         currentPlane = imread(G2,i-d12);
-        currentPlane = circshift(currentPlane,[-dx,-dy]);
-        currentPlane1 = imread(G1,i+1-stg(1));
-%         currentPlane = w1*currentPlane+w2*currentPlane1;
+        currentPlane = mycircshift(currentPlane,[-dx,-dy]);
+        if i+1-stg(1)>0
+            currentPlane1 = imread(G1,i+1-stg(1));
+        else
+            currentPlane1=currentPlane;
+        end
         currentPlane = max(currentPlane,currentPlane1);
         imwrite(currentPlane,outName,'WriteMode','append');
     end
@@ -50,5 +61,17 @@ else
         currentPlane = imread(G1,i-stg(1)+1);
         imwrite(currentPlane,outName,'WriteMode','append');
     end
+    l = length(imfinfo(G1));
+    while p>0
+        i = i+1;p=p-1;
+        ind = i-stg(1)+1;
+        if ind>l
+            currentPlane = ccPlane;
+        else
+            currentPlane = imread(G1,ind);
+        end
+        imwrite(currentPlane,outName,'WriteMode','append');
+    end
+      
 end
 end
