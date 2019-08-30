@@ -264,7 +264,9 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 dirProj0 = handles.projSaving;
 
 aliNum = handles.aliNum;
+aliNum
 l = length(aliNum)-1;
+l
 
 newDir = [dirProj0,'new'];
 mkdir(newDir);
@@ -273,6 +275,7 @@ newSide = fullfile(newDir,'Side.tif');
 delIfExi(newFront,newSide);
 
 tp = length(dir(fullfile(dirProj0,'*.tif')))/2;
+tp
 dxyz = zeros(tp,3);
 
 
@@ -341,7 +344,7 @@ set(handles.edit7,'string',num2str(x2));
 set(handles.edit8,'string',num2str(y1));
 set(handles.edit9,'string',num2str(y2));
 
-msgbox('Please refer to the alined file.');
+msgbox('Please refer to the aligned file.');
 
 
 
@@ -399,7 +402,7 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[~,dirName] = uigetfile('','Please select data saving file..');
+[~,dirName] = uigetfile('*.*','Please select data saving file..');
 if dirName~=0
     set(handles.edit10,'string',dirName);
     handles.dataSaving = dirName;
@@ -418,7 +421,7 @@ x20 = handles.x2;
 y10 = handles.y1;
 y20 = handles.y2;
 dxyz = handles.dxyz;
-tp = length(dxyz);
+tp = size(dxyz,1);
 dataSaving = handles.dataSaving;
 songbi = '.\myFun\test\';
 ccplane = zeros(y20-y10+1,x20-x10+1);
@@ -434,7 +437,7 @@ eval(['ccplane = ',class(a),'(ccplane);']);
 
 % save data
 
-for c2start = 1:tp
+for c2start = 1:tp+1
     if exist([dataSaving,'\',num2str(c2start),'C2.tif'],'file')
         break
     end
@@ -447,7 +450,7 @@ if b(1)=='Y'
         imwrite(ccplane,noC20,'writemode','append');
     end
 
-    h = waitbar(0,'Alining...');
+    h = waitbar(0,'Aligning...');
     for k = 1:tp
         waitbar(k/tp,h);
         dx = dxyz(k,2);
@@ -508,7 +511,7 @@ if b(1)=='Y'
             end
             movefile(no2,n2);
     end
-    delete(noc20);
+    delete(noC20);
     close(h);
     msgbox('All done, yeah!');
 else
