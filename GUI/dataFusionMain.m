@@ -15,7 +15,7 @@ for k =timePoints
     outFile = [num2str(k),'.tif'];
     outName = [outputFolder,'\',outFile];
     outName2 = strrep(outName,'.tif','C2.tif');
-    tempNameWrite = [tempFolder,'\',num2str(k),'_G1write.tif'];
+    tempNameWrite = fullfile(tempFolder,[num2str(k),'_G1write.tif']);
     tempNameWrite2 = strrep(tempNameWrite,'.tif','C2.tif');
     
     
