@@ -56,9 +56,15 @@ function dataFusion_OpeningFcn(hObject, eventdata, handles, varargin)
 warning off
 javaaddpath '.\bfopen\bioformats_package.jar'
 
+if exist('.\bfopen\bioformats_package.jar','file')
+    handles.jf = 1;
+else
+    handles.jf = 0;
+end
 
 global bstop
 bstop = 0;
+
 
 handles.output = hObject;
 
@@ -359,6 +365,7 @@ G2ed = handles.G2ed;
 G1st = handles.G1st;
 estSize = handles.estSize;
 c = handles.crosstalk;%´®É«ÏµÊý
+jf = handles.jf;
 
 dataFusionMain
 

@@ -26,11 +26,15 @@ for k =timePoints
     end
     
     %获取平面数量、尺寸及handle
-    r = bfGetReader(inputName);
-    numImages = r.getImageCount();
+    if jf==1
+        r = bfGetReader(inputName);
+        numImages = r.getImageCount();
+    else
+        numImages = length(imfinfo(inputName));
+    end
+    %     s(2) =  r.getSizeX();
+    %     s(1) =  r.getSizeY();
     numPlane = numImages/(2*colorChannel);
-    s(2) =  r.getSizeX();
-    s(1) =  r.getSizeY();
     stg = [G1st,1];
     edg = [numPlane,numPlane+1-G2ed];
     
@@ -51,7 +55,9 @@ for k =timePoints
             inputName = strrep(inputName,'_G1','_G2');
             tempNameWrite = strrep(tempNameWrite,'_G1','_G2');
             tempNameWrite2 = strrep(tempNameWrite2,'_G1','_G2');
+            if jf == 1
             r = bfGetReader(inputName);
+            end
         end
         % 初始化图片亮度
         if G==1
@@ -71,25 +77,30 @@ for k =timePoints
             end
             lf = (p-1).*2.*colorChannel+1;
             rg = lf + colorChannel;
+            if jf ==1
             im_lef = bfGetPlane(r,lf);
             im_righ = bfGetPlane(r,rg);
+            else
+            im_lef = imread(inputName,lf);
+            im_righ = imread(inputName,rg);
+            end
             if colorChannel ==2
                 lf2 = lf+1;
                 rg2 = rg+1;
                 im_lef2 = bfGetPlane(r,lf2);
                 im_righ2 = bfGetPlane(r,rg2);
                 [img,img2] = smerge(im_lef,im_righ,im_lef2,im_righ2);
-                 %解决串色
-                 se = strel('square',2*s1);
-                 img2 = img2 - c*imtophat(img,se);
-                 %减背景
+                %解决串色
+                se = strel('square',2*s1);
+                img2 = img2 - c*imtophat(img,se);
+                %减背景
                 img = subsBackground(img,backStrel, averker);
                 img2 = subsBackground(img2,backStrelC2, averkerC2);
-               
-
+                
+                
             else
                 img = smerge(im_lef,im_righ);
-                img = subsBackground(img,backStrel, averker);    
+                img = subsBackground(img,backStrel, averker);
             end
             if G==2
                 img = fliplr(img);
@@ -111,7 +122,7 @@ for k =timePoints
             
             fff(G,p1) = meanPart(img);
         end
-        disp([num2str(G),'fusion finished'])  
+        disp([num2str(G),'fusion finished'])
         
     end
     
