@@ -364,7 +364,6 @@ C2num = handles.C2;
 G2ed = handles.G2ed;
 G1st = handles.G1st;
 estSize = handles.estSize;
-c = handles.crosstalk;%´®É«ÏµÊý
 jf = handles.jf;
 
 dataFusionMain
@@ -430,32 +429,6 @@ guidata(hObject,handles);
 % --- Executes during object creation, after setting all properties.
 function edit10_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit10 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit11_Callback(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit11 as text
-%        str2double(get(hObject,'String')) returns contents of edit11 as a double
-c = str2double(get(hObject,'String'));
-handles.crosstalk = c;
-guidata(hObject,handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function edit11_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
